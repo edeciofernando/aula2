@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    
+  <title>Centro Odontológico Avenida</title>
+</head>
+<body>
+  <div id="root" class="m-2"></div>
+
+  <script type="text/babel">
+
+    function ListaPacientes(props) {
+      return (
+        <ol className='text-primary font-weight-bold'>
+        {props.pacientes.map((paciente) => (
+          <li key={paciente}>{paciente}</li>
+        ))}
+        </ol>
+      )
+    }     
+
+    class App extends React.Component {
+
+      state = {
+        nome : '',
+        atendimento: '',
+        pacientes: []
+      }
+
+      handleChange = e => {
+        this.setState({nome: e.target.value})
+      }
+
+      addPaciente = () => {
+        if (this.state.nome == '') {
+          alert('Por favor, preencha o nome do paciente')
+          return
+        }
+
+        this.setState( state => ({
+          pacientes: state.pacientes.concat(state.nome),
+          nome: ''
+        }))        
+      }
+
+      atender = () => {
+        if (this.state.pacientes.length == 0) {
+          alert('Não há pacientes na lista de espera')
+          return
+        }
+
+        // "divide" o vetor pacientes em primeiro e outros
+        const [primeiro, ...outros] = this.state.pacientes
+
+        this.setState({
+          atendimento: primeiro,
+          pacientes: outros
+        })
+      }
+
+      render() {
+        return (
+          <div className='container'>
+            <div className='row'>
+              <div className='col-sm-4'>
+                <img src="dentista.jpg" alt="Dentista" className='img-fluid mb-2' />
+              </div>
+              <div className='col-sm-8'>
+                <h5>Centro Odontológico Avenida</h5>
+                <hr/>
+                <div className="form-group">
+                  <label forHtml="nome">Nome do Paciente:</label>
+                    <input type="text" className="form-control" id="nome"
+                           onChange={this.handleChange}
+                           value={this.state.nome} />
+                </div>            
+                <button className='btn btn-primary px-4'
+                        onClick={this.addPaciente}>
+                  Adicionar
+                </button>    
+                <button className='btn btn-danger px-4 ml-3'
+                        onClick={this.atender}>
+                  Atender
+                </button>    
+                <h5 className='my-3'>Paciente em Atendimento: 
+                    <span className='text-danger ml-1'>{this.state.atendimento}</span></h5>
+                <h5>Lista de Pacientes em Espera</h5>
+                <ListaPacientes pacientes={this.state.pacientes} />
+              </div>              
+            </div>
+          </div>  
+        )
+      }
+    }
+
+    ReactDOM.render(
+      <App />,
+      document.getElementById('root')
+    )
+
+  </script>
+</body>
+</html>

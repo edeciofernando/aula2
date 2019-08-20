@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    
+  <title>Condomínio Avenida-Votação</title>
+</head>
+<body>
+  <div id="root" class="m-2"></div>
+
+  <script type="text/babel">
+  
+    class App extends React.Component {
+
+      state = {
+        numSim: 0,
+        numNao: 0,
+        voto: ''
+      }
+
+      // arrow function
+      // function handleChange(e) {}
+      handleChange = e => {
+        if (e.target.name == 'rbSim') {
+          this.setState({voto: 'sim'})
+        } else {
+          this.setState({voto: 'nao'})
+        }
+      }
+
+      handleClick = () => {
+        if (this.state.voto == '') {
+          alert('Selecione sim ou não para o seu voto')
+        } else if (this.state.voto == 'sim') {
+          this.setState({numSim : this.state.numSim + 1})
+        } else {
+          this.setState({numNao : this.state.numNao + 1})
+        }
+        this.setState({voto: ''})
+      }
+
+      render() {
+        return (
+          <div className='container'>
+            <div className='row'>
+              <div className='col-sm-4'>
+                <img src="condominio.jpg" alt="Condomínio" className='img-fluid mb-2' />
+              </div>
+              <div className='col-sm-8'>
+                <h5>Condomínio Avenida-Votação</h5>
+                <h6 className="mb-3">Você concorda com a pintura do muro?</h6>                
+                <div className="form-check-inline">
+                  <label className="form-check-label">
+                    <input type="radio" 
+                           className="form-check-input" 
+                           name="rbSim"
+                           checked={this.state.voto=='sim'}
+                           onChange={this.handleChange}
+                           />Sim
+                  </label>
+                </div>
+                <div className="form-check-inline">
+                  <label className="form-check-label">
+                    <input type="radio" 
+                           className="form-check-input ml-3" 
+                           name="rbNao"
+                           checked={this.state.voto=='nao'}
+                           onChange={this.handleChange}
+                           />Não
+                  </label>
+                </div>
+                <button className='btn btn-primary ml-3 px-5'
+                        onClick={this.handleClick}>
+                  Votar
+                </button>
+                <h6 className='text-danger mt-4'>Total de Votos Sim: {this.state.numSim} </h6>
+                <h6 className='text-danger'>Total de Votos Não: {this.state.numNao} </h6>
+              </div>              
+            </div>
+          </div>  
+        )
+      }
+    }
+
+    ReactDOM.render(
+      <App />,
+      document.getElementById('root')
+    )
+
+  </script>
+</body>
+</html>
